@@ -1,0 +1,23 @@
+services:
+  app:
+    image: mcr.microsoft.com/devcontainers/java:17
+    volumes:
+      - ..:/workspaces/${localWorkspaceFolderBasename}:cached
+    command: sleep infinity
+    network_mode: service:db
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Billuxury@123"
+
+  init:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    depends_on: [db]
+    volumes:
+      - ../database:/sql
+    command: >
+      bash -c "for i in $(seq 1 30); do
+      /opt/mssql-tools18/bin/sqlcmd -S db -U sa -P 'Billuxury@123' -C -f 65001 -i /sql/database_setup.sql && break;
+      sleep 5; done"
