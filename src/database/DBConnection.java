@@ -13,7 +13,7 @@ public class DBConnection {
             + "loginTimeout=5";
 
     private static final String USER = "sa";
-    private static final String PASSWORD = "123456";
+    private static final String PASSWORD = "Billuxury@123";
 
     public static Connection getConnection() {
         try {
